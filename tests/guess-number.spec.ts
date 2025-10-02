@@ -28,4 +28,20 @@ test.describe('guess the number', () => {
     await expect(page.locator('[data-testid="showAttempts"]')).toBeEmpty();
   })
 
+  test('TS888-002: Verify "GUESS" Button Enables/Disables with Input', async ({ page }) => {
+    //1.  Observe the initial state of the "GUESS" button.
+    //   Verify it is **disabled**.
+    await expect(page.locator('[data-testid="guessButton"]')).toBeDisabled();
+
+    //2.  Enter the value "1" into the input field.
+    //   Verify the button becomes **enabled**.
+    await page.locator('[data-testid="guessField"]').fill('1');
+    await expect(page.locator('[data-testid="guessButton"]')).toBeEnabled();
+
+    //3.  Clear the input field.
+    //   Verify the button becomes **disabled** again.
+    await page.locator('[data-testid="guessField"]').fill('');
+    await expect(page.locator('[data-testid="guessButton"]')).toBeDisabled();
+  })
+
 })
