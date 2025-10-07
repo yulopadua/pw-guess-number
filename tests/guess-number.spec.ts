@@ -116,75 +116,75 @@ test.describe('guess the number', () => {
   test('TS888-006: Validate Input Boundary (Lower): Number 1', async ({ page }) => {
     //1.  Enter the value `1`.
     //2.  Click the "GUESS" button.
-    await page.locator('[data-testid="guessField"]').fill('1');
-    await page.locator('[data-testid="guessButton"]').click();
+    await guessNumberPage.getGuessField.fill('1');
+    await guessNumberPage.getGuessButton.click();
 
     //   Verify the input is processed as a valid guess (no error message).
-    await expect(page.locator('[data-testid="messageArea"]')).not.toContainText('error');
+    await expect(guessNumberPage.getMessageArea).not.toContainText('error');
 
     //   Verify the attempts counter increments.
-    await expect(page.locator('[data-testid="showAttempts"]').locator('.rotateAttempt')).not.toContainText('0');
+    await expect(guessNumberPage.getShowAttempts.locator('.rotateAttempt')).not.toContainText('0');
   })
 
   test('TS888-007: Validate Input Boundary (Upper): Number 50', async ({ page }) => {
     //1.  Enter the value `50`.
     //2.  Click the "GUESS" button.
-    await page.locator('[data-testid="guessField"]').fill('50');
-    await page.locator('[data-testid="guessButton"]').click();
+    await guessNumberPage.getGuessField.fill('50');
+    await guessNumberPage.getGuessButton.click();
 
     //   Verify the input is processed as a valid guess (no error message).
-    await expect(page.locator('[data-testid="messageArea"]')).not.toContainText('error');
+    await expect(guessNumberPage.getMessageArea).not.toContainText('error');
   
     //   Verify the attempts counter increments.
-    await expect(page.locator('[data-testid="showAttempts"]').locator('.rotateAttempt')).not.toContainText('0');
+    await expect(guessNumberPage.getShowAttempts.locator('.rotateAttempt')).not.toContainText('0');
   })
 
   test('TS888-008: Verify Error for Out-of-Range Input (Low: 0)', async ({ page }) => {
     //1.  Enter the value `0`.
     //2.  Click the "GUESS" button.
-    await page.locator('[data-testid="guessField"]').fill('0');
-    await page.locator('[data-testid="guessButton"]').click();
+    await guessNumberPage.getGuessField.fill('0');
+    await guessNumberPage.getGuessButton.click();
 
     //   Verify the message area displays: **"ERROR:\nInput should be between 1 & 50"**.
-    await expect(page.locator('[data-testid="messageArea"]')).toContainText('ERROR:Input should be between 1 & 50');
+    await expect(guessNumberPage.getMessageArea).toContainText('ERROR:Input should be between 1 & 50');
 
     //   Verify the attempts counter does **not** increment.
-    await expect(page.locator('[data-testid="showAttempts"]').locator('.rotateAttempt')).toContainText('0');
+    await expect(guessNumberPage.getShowAttempts.locator('.rotateAttempt')).toContainText('0');
 
     //   Verify the guess is **not** added to the previous guesses list.
-    await expect(page.locator('[data-testid="guesses"]')).toHaveText('');
+    await expect(guessNumberPage.getGuesses).toHaveText('');
   })
 
   test('TS888-009: Verify Error for Out-of-Range Input (High: 51)', async ({ page }) => {
     //1.  Enter the value `51`.
     //2.  Click the "GUESS" button.
-    await page.locator('[data-testid="guessField"]').fill('51');
-    await page.locator('[data-testid="guessButton"]').click();
+    await guessNumberPage.getGuessField.fill('51');
+    await guessNumberPage.getGuessButton.click();
 
     //   Verify the message area displays: **"ERROR:\nInput should be between 1 & 50"**.
-    await expect(page.locator('[data-testid="messageArea"]')).toContainText('ERROR:Input should be between 1 & 50');
+    await expect(guessNumberPage.getMessageArea).toContainText('ERROR:Input should be between 1 & 50');
 
     //   Verify the attempts counter does **not** increment.
-    await expect(page.locator('[data-testid="showAttempts"]').locator('.rotateAttempt')).toContainText('0');
+    await expect(guessNumberPage.getShowAttempts.locator('.rotateAttempt')).toContainText('0');
 
     //   Verify the guess is **not** added to the previous guesses list.
-    await expect(page.locator('[data-testid="guesses"]')).toHaveText('');
+    await expect(guessNumberPage.getGuesses).toHaveText('');
   })
 
   test('TS888-010: Verify Error for Negative Input', async ({ page }) => {
     //1.  Enter a negative value (e.g., `-5`).
     //2.  Click the "GUESS" button.
-    await page.locator('[data-testid="guessField"]').fill('-5');
-    await page.locator('[data-testid="guessButton"]').click();
+    await guessNumberPage.getGuessField.fill('-5');
+    await guessNumberPage.getGuessButton.click();
 
     //   Verify the message area displays the out-of-range error message.
-    await expect(page.locator('[data-testid="messageArea"]')).toContainText('ERROR:Input should be between 1 & 50');
+    await expect(guessNumberPage.getMessageArea).toContainText('ERROR:Input should be between 1 & 50');
 
     //   Verify the attempts counter does **not** increment.
-    await expect(page.locator('[data-testid="showAttempts"]').locator('.rotateAttempt')).toContainText('0');
+    await expect(guessNumberPage.getShowAttempts.locator('.rotateAttempt')).toContainText('0');
 
     //   Verify the guess is **not** added to the previous guesses list.
-    await expect(page.locator('[data-testid="guesses"]')).toHaveText('');
+    await expect(guessNumberPage.getGuesses).toHaveText('');
   })
 
   test('TS888-011: Verify Error for Non-Numeric Input', async ({ page }) => {
