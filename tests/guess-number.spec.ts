@@ -190,138 +190,138 @@ test.describe('guess the number', () => {
   test('TS888-011: Verify Error for Non-Numeric Input', async ({ page }) => {
     //1.  Enter a non-numeric value (e.g., `abc`).
     //2.  Click the "GUESS" button.
-    await page.locator('[data-testid="guessField"]').fill('ab');
-    await page.locator('[data-testid="guessButton"]').click();
+    await guessNumberPage.getGuessField.fill('ab');
+    await guessNumberPage.getGuessButton.click();
 
     //   Verify the application displays an error.
-    await expect(page.locator('[data-testid="messageArea"]')).toContainText('ERROR:Input should be between 1 & 50');
+    await expect(guessNumberPage.getMessageArea).toContainText('ERROR:Input should be between 1 & 50');
 
     //   Verify the attempts counter does **not** increment.
-    await expect(page.locator('[data-testid="showAttempts"]').locator('.rotateAttempt')).toContainText('0');
+    await expect(guessNumberPage.getShowAttempts.locator('.rotateAttempt')).toContainText('0');
 
     //   Verify the guess is **not** added to the previous guesses list.
-    await expect(page.locator('[data-testid="guesses"]')).toHaveText('');
+    await expect(guessNumberPage.getGuesses).toHaveText('');
   })
 
   test('TS888-012: Verify Game Over After 10 Incorrect Attempts (Lose Condition)', async ({ page }) => {
     //1.  Enter 10 incorrect guesses (e.g., numbers that are not 12).
     for (let i = 1; i <= 10; i++) {
-      await page.locator('[data-testid="guessField"]').fill(String(i));
-      await page.locator('[data-testid="guessButton"]').click();
+      await guessNumberPage.getGuessField.fill(String(i));
+      await guessNumberPage.getGuessButton.click();
     }
 
     //   Verify on the 10th attempt, the card flips, revealing the secret number (12).
-    await expect(page.locator('#card')).toHaveClass(/flipped/);
-    await expect(page.locator('#cardValue')).toContainText('12');
+    await expect(guessNumberPage.getContainerCard).toHaveClass(/flipped/);
+    await expect(guessNumberPage.getCardValue).toContainText('12');
 
     //   Verify the message area displays: **"Game Over! You've used all your attempts."**.
-    await expect(page.locator('[data-testid="messageArea"]')).toContainText("Game Over! You've used all your attempts.");
+    await expect(guessNumberPage.getMessageArea).toContainText("Game Over! You've used all your attempts.");
 
     //   Verify the "GUESS" button is replaced with a "RESET" button.
-    await expect(page.locator('[data-testid="guessButton"]')).not.toBeAttached();
-    await expect(page.locator('[data-testid="reset"]')).toBeAttached();
+    await expect(guessNumberPage.getGuessButton).not.toBeAttached();
+    await expect(guessNumberPage.getResetButton).toBeAttached();
 
     //   Verify the input field is disabled.
-    await expect(page.locator('[data-testid="guessField"]')).not.toBeEnabled();
+    await expect(guessNumberPage.getGuessField).not.toBeEnabled();
 
     //   Verify the attempts counter shows **"10 / 10"**.
-    await expect(page.locator('[data-testid="showAttempts"]')).toContainText('10 / 10');
+    await expect(guessNumberPage.getShowAttempts).toContainText('10 / 10');
   })
 
   test('TS888-013: Verify "RESET" Button Functionality After Win', async ({ page }) => {
     //1.  Complete a winning game (e.g., guess `12`).
-    await page.locator('[data-testid="guessField"]').fill('12');
-    await page.locator('[data-testid="guessButton"]').click();
+    await guessNumberPage.getGuessField.fill('12');
+    await guessNumberPage.getGuessButton.click();
 
     //2.  Click the `[data-testid="reset"]` button.
-    await page.locator('[data-testid="reset"]').click();
+    await guessNumberPage.getResetButton.click();
 
     //   Verify the page reloads and returns to the initial state described in TS888-001.
 
     //   Verify the card front displays "Guess the card value" and "**".
-    await expect(page.locator('#frontCardTitle')).toContainText('Guess the card value');
-    await expect(page.locator('#frontCardValue')).toContainText('**');
+    await expect(guessNumberPage.getTextfrontCardTitle).toContainText('Guess the card value');
+    await expect(guessNumberPage.getTextfrontCardValue).toContainText('**');
 
     //   Verify the input field `[data-testid="guessField"]` is empty, enabled, and has focus.
-    await expect(page.locator('[data-testid="guessField"]')).toBeEmpty();
-    await expect(page.locator('[data-testid="guessField"]')).toBeEnabled();
-    await expect(page.locator('[data-testid="guessField"]')).toBeFocused();
+    await expect(guessNumberPage.getGuessField).toBeEmpty();
+    await expect(guessNumberPage.getGuessField).toBeEnabled();
+    await expect(guessNumberPage.getGuessField).toBeFocused();
 
     //   Verify the `[data-testid="guessButton"]` button displays "GUESS" and is **disabled**.
-    await expect(page.locator('[data-testid="guessButton"]')).toContainText('GUESS');
-    await expect(page.locator('[data-testid="guessButton"]')).toBeDisabled();
+    await expect(guessNumberPage.getGuessButton).toContainText('GUESS');
+    await expect(guessNumberPage.getGuessButton).toBeDisabled();
 
     //   Verify the `[data-testid="messageArea"]` is empty.
     //   Verify the `[data-testid="guesses"]` container is empty.
     //   Verify the `[data-testid="showAttempts"]` attempts counter is in its initial state (e.g., " / 10").
-    await expect(page.locator('[data-testid="messageArea"]')).toBeEmpty();
-    await expect(page.locator('[data-testid="guesses"]')).toBeEmpty();
-    await expect(page.locator('[data-testid="showAttempts"]')).toBeEmpty();
+    await expect(guessNumberPage.getMessageArea).toBeEmpty();
+    await expect(guessNumberPage.getGuesses).toBeEmpty();
+    await expect(guessNumberPage.getShowAttempts).toBeEmpty();
   })
 
   test('TS888-014: Verify "RESET" Button Functionality After Loss', async ({ page }) => {
     //1.  Complete a losing game (e.g., 10 wrong guesses).
     for (let i = 1; i <= 10; i++) {
-      await page.locator('[data-testid="guessField"]').fill(String(i));
-      await page.locator('[data-testid="guessButton"]').click();
+      await guessNumberPage.getGuessField.fill(String(i));
+      await guessNumberPage.getGuessButton.click();
     }
 
     //2.  Click the `[data-testid="reset"]` button.
-    await page.locator('[data-testid="reset"]').click();
+    await guessNumberPage.getResetButton.click();
 
     //   Verify the page reloads and returns to the initial state described in TS888-001.
 
     //   Verify the card front displays "Guess the card value" and "**".
-    await expect(page.locator('#frontCardTitle')).toContainText('Guess the card value');
-    await expect(page.locator('#frontCardValue')).toContainText('**');
+    await expect(guessNumberPage.getTextfrontCardTitle).toContainText('Guess the card value');
+    await expect(guessNumberPage.getTextfrontCardValue).toContainText('**');
 
     //   Verify the input field `[data-testid="guessField"]` is empty, enabled, and has focus.
-    await expect(page.locator('[data-testid="guessField"]')).toBeEmpty();
-    await expect(page.locator('[data-testid="guessField"]')).toBeEnabled();
-    await expect(page.locator('[data-testid="guessField"]')).toBeFocused();
+    await expect(guessNumberPage.getGuessField).toBeEmpty();
+    await expect(guessNumberPage.getGuessField).toBeEnabled();
+    await expect(guessNumberPage.getGuessField).toBeFocused();
 
     //   Verify the `[data-testid="guessButton"]` button displays "GUESS" and is **disabled**.
-    await expect(page.locator('[data-testid="guessButton"]')).toContainText('GUESS');
-    await expect(page.locator('[data-testid="guessButton"]')).toBeDisabled();
+    await expect(guessNumberPage.getGuessButton).toContainText('GUESS');
+    await expect(guessNumberPage.getGuessButton).toBeDisabled();
 
     //   Verify the `[data-testid="messageArea"]` is empty.
     //   Verify the `[data-testid="guesses"]` container is empty.
     //   Verify the `[data-testid="showAttempts"]` attempts counter is in its initial state (e.g., " / 10").
-    await expect(page.locator('[data-testid="messageArea"]')).toBeEmpty();
-    await expect(page.locator('[data-testid="guesses"]')).toBeEmpty();
-    await expect(page.locator('[data-testid="showAttempts"]')).toBeEmpty();
+    await expect(guessNumberPage.getMessageArea).toBeEmpty();
+    await expect(guessNumberPage.getGuesses).toBeEmpty();
+    await expect(guessNumberPage.getShowAttempts).toBeEmpty();
   })
 
   test('TS888-015: Verify Attempts Counter Increments Only on Valid Guesses', async ({ page }) => {
     //1.  Enter `0` (invalid). Click "GUESS".
     //   Verify attempts counter remains unchanged from initial state (e.g., " / 10").
-    await page.locator('[data-testid="guessField"]').fill('0');
-    await page.locator('[data-testid="guessButton"]').click();
-    await expect(page.locator('[data-testid="showAttempts"]')).toContainText('0 / 10');
+    await guessNumberPage.getGuessField.fill('0');
+    await guessNumberPage.getGuessButton.click();
+    await expect(guessNumberPage.getShowAttempts).toContainText('0 / 10');
 
     //2.  Enter `60` (invalid). Click "GUESS".
     //   Verify attempts counter remains unchanged.
-    await page.locator('[data-testid="guessField"]').fill('60');
-    await page.locator('[data-testid="guessButton"]').click();
-    await expect(page.locator('[data-testid="showAttempts"]')).toContainText('0 / 10');
+    await guessNumberPage.getGuessField.fill('60');
+    await guessNumberPage.getGuessButton.click();
+    await expect(guessNumberPage.getShowAttempts).toContainText('0 / 10');
 
     //3.  Enter `5` (valid). Click "GUESS".
     //   Verify attempts counter now reads "1 / 10".
-    await page.locator('[data-testid="guessField"]').fill('5');
-    await page.locator('[data-testid="guessButton"]').click();
-    await expect(page.locator('[data-testid="showAttempts"]')).toContainText('1 / 10');
+    await guessNumberPage.getGuessField.fill('5');
+    await guessNumberPage.getGuessButton.click();
+    await expect(guessNumberPage.getShowAttempts).toContainText('1 / 10');
 
     //4.  Enter `30` (valid). Click "GUESS".
     //   Verify attempts counter now reads "2 / 10".
-    await page.locator('[data-testid="guessField"]').fill('30');
-    await page.locator('[data-testid="guessButton"]').click();
-    await expect(page.locator('[data-testid="showAttempts"]')).toContainText('2 / 10');
+    await guessNumberPage.getGuessField.fill('30');
+    await guessNumberPage.getGuessButton.click();
+    await expect(guessNumberPage.getShowAttempts).toContainText('2 / 10');
 
     //5.  Enter `12` (valid). Click "GUESS".
     //   Verify attempts counter now reads "3 / 10".
-    await page.locator('[data-testid="guessField"]').fill('12');
-    await page.locator('[data-testid="guessButton"]').click();
-    await expect(page.locator('[data-testid="showAttempts"]')).toContainText('3 / 10');
+    await guessNumberPage.getGuessField.fill('12');
+    await guessNumberPage.getGuessButton.click();
+    await expect(guessNumberPage.getShowAttempts).toContainText('3 / 10');
   })
 
   test('TS888-016: Verify Sequential Guesses with Mixed Feedback', async ({ page }) => {

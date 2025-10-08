@@ -11,6 +11,7 @@ export default class guessPage {
   getShowAttempts: Locator
   getContainerCard: Locator
   getResetButton: Locator
+  getCardValue: Locator
 
   constructor (page: Page) {
     this.page = page
@@ -24,6 +25,7 @@ export default class guessPage {
     this.getShowAttempts = page.getByTestId('showAttempts')
 
     this.getContainerCard = page.locator('#card')
+    this.getCardValue = page.locator('#cardValue')
 
     this.getResetButton = page.getByTestId('reset')
   }
